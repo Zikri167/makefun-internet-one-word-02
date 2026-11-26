@@ -1,17 +1,23 @@
+// The Internet in One Word — entry: "funhouse"
+//
+// Why this word: the internet is a funhouse — a hall of distorted
+// mirrors. Everything in it is warped, loud, a little creepy, and
+// yet everyone keeps laughing inside it. One word, funny on its own,
+// true of the whole internet, and surprising enough to stick.
+//
+// Behavior: writes exactly the word "funhouse" (8 characters, no
+// trailing newline) to <output dir>/entry.txt. The output directory
+// comes from the OUTPUT_DIR environment variable when set (used for
+// local testing); otherwise it defaults to /output.
 import { mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 
-// The Internet in One Word — v2 entry.
-// Winning word from blind pairwise judging: "funhouse".
-// The whole internet is a funhouse: every door is a distorted mirror,
-// every hallway bends, you came in for one thing and you leave hours
-// later not knowing where you are — and you had fun anyway.
 const WORD = "funhouse";
+const outputDir = process.env.OUTPUT_DIR ?? "/output";
+const outputPath = join(outputDir, "entry.txt");
 
-if (!/^[A-Za-z]{1,30}$/.test(WORD)) {
-  throw new Error(`entry word must be 1-30 letters, got: ${JSON.stringify(WORD)}`);
-}
+// Make sure the output directory exists (e.g. a fresh /tmp test dir
+// or a clean /output mount) instead of failing on the write below.
+mkdirSync(outputDir, { recursive: true });
 
-const outDir = process.env.OUTPUT_DIR ?? "/output";
-mkdirSync(outDir, { recursive: true });
-writeFileSync(join(outDir, "entry.txt"), WORD, "utf8");
+writeFileSync(outputPath, WORD, "utf8");
